@@ -266,11 +266,17 @@
             font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
+            transition: opacity 0.2s ease;
         }
         
         .save-btn:disabled {
             background: #e5e5e5;
             color: #999;
+            cursor: not-allowed;
+        }
+        
+        .save-btn:active:not(:disabled) {
+            opacity: 0.8;
         }
         
         .compose-textarea {
@@ -565,16 +571,25 @@
         
         // Save note
         function saveNote() {
-            const text = document.getElementById('composeTextarea').value.trim();
-            if (!text) return;
+            console.log('Save note clicked'); // Debug log
+            const textarea = document.getElementById('composeTextarea');
+            const text = textarea.value.trim();
+            console.log('Note text:', text); // Debug log
+            
+            if (!text) {
+                console.log('No text to save');
+                return;
+            }
             
             if (isEditing && editingId) {
+                console.log('Editing existing note:', editingId);
                 const noteIndex = notes.findIndex(note => note.id === editingId);
                 if (noteIndex !== -1) {
                     notes[noteIndex].text = text;
                     notes[noteIndex].timestamp = Date.now();
                 }
             } else {
+                console.log('Creating new note');
                 const newNote = {
                     id: Date.now(),
                     text: text,
@@ -583,6 +598,7 @@
                 notes.unshift(newNote);
             }
             
+            console.log('Notes array:', notes); // Debug log
             saveNotes();
             renderNotes();
             closeCompose();
