@@ -474,16 +474,12 @@
         // Render notes
         function renderNotes(filteredNotes = null) {
             const container = document.getElementById('notesContainer');
-            const emptyState = document.getElementById('emptyState');
             const notesToRender = filteredNotes || notes;
             
             if (notesToRender.length === 0) {
-                emptyState.classList.remove('hidden');
-                container.innerHTML = '<div class="empty-state">No notes found</div>';
+                container.innerHTML = '<div class="empty-state" id="emptyState">No notes found</div>';
                 return;
             }
-            
-            emptyState.classList.add('hidden');
             
             container.innerHTML = notesToRender.map(note => {
                 const tags = extractTags(note.text);
